@@ -32,9 +32,9 @@ void create(int a[], int n)
 int deleteCircular(struct Node *p, int index)
 {
     struct Node *t;
-    int x, i;
+    int x = -1, i;
     t = (struct Node *)malloc(sizeof(struct Node));
-    if (index == 1)
+    if (index == 0)
     {
         while (p->next != head)
             p = p->next;
@@ -53,7 +53,7 @@ int deleteCircular(struct Node *p, int index)
     }
     else
     {
-        for (i = 0; i < index - 2; i++)
+        for (i = 0; i < index - 1; i++)
             p = p->next;
         struct Node *q;
         q = p->next;
@@ -80,7 +80,7 @@ int main()
     int size = sizeof a / sizeof a[0];
     create(a, size);
     display(head);
-    printf("%d is deleted\n", deleteCircular(head, 1));
     printf("%d is deleted\n", deleteCircular(head, 2));
+    printf("%d is deleted\n", deleteCircular(head, 1));
     display(head);
 }
