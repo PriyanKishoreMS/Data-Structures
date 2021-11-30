@@ -49,9 +49,9 @@ struct Node *rinsert(struct Node *p, int key)
         t->lchild = t->rchild = NULL;
         return t;
     }
-    if (key < t->data)
+    if (key < p->data)
         p->lchild = rinsert(p->lchild, key);
-    else if (key > t->data)
+    else if (key > p->data)
         p->rchild = rinsert(p->rchild, key);
     return p;
 }
