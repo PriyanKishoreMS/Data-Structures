@@ -59,7 +59,7 @@ int height(struct Node *p)
     return x > y ? x + 1 : y + 1;
 }
 
-struct Node *inPre(struct Node *p)
+struct Node *inPre(struct Node *p) // right most node of the left subtree, which can replace the root;
 {
     while (p && p->rchild != NULL)
         p = p->rchild;

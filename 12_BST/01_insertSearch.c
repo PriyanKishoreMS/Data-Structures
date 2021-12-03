@@ -50,7 +50,7 @@ struct Node *rinsert(struct Node *p, int key)
         return t;
     }
     if (key < p->data)
-        p->lchild = rinsert(p->lchild, key);
+        p->lchild = rinsert(p->lchild, key); // p->lchild is called back as p(NULL), gets created and connected;
     else if (key > p->data)
         p->rchild = rinsert(p->rchild, key);
     return p;

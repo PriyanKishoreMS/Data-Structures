@@ -32,132 +32,112 @@ int bfactor(struct Node *p)
 
 struct Node *LLrotation(struct Node *p)
 {
-    struct Node *tl = p->lchild;
-    struct Node *tlr = tl->rchild;
+    struct Node *pl = p->lchild;
+    struct Node *plr = pl->rchild; // the node that has to be replaced (not the node that directly gets involved in the rotation);
 
-    tl->rchild = p;
-    p->lchild = tlr;
+    pl->rchild = p;
+    p->lchild = plr;
 
     p->height = Nodeheight(p);
-    tl->height = Nodeheight(tl);
+    pl->height = Nodeheight(pl);
 
     if (root == p)
-    {
-        root = tl;
-    }
+        root = pl;
 
-    return tl;
+    return pl;
 }
 
 struct Node *RRrotation(struct Node *p)
 {
-    struct Node *tr = p->rchild;
-    struct Node *trl = tr->lchild;
+    struct Node *pr = p->rchild;
+    struct Node *prl = pr->lchild;
 
-    tr->lchild = p;
-    p->rchild = trl;
+    pr->lchild = p;
+    p->rchild = prl;
 
     p->height = Nodeheight(p);
-    tr->height = Nodeheight(tr);
+    pr->height = Nodeheight(pr);
 
     if (root == p)
-    {
-        root = tr;
-    }
+        root = pr;
 
-    return tr;
+    return pr;
 }
 
 struct Node *LRrotation(struct Node *p)
 {
 
-    struct Node *tl = p->lchild;
-    struct Node *tlr = tl->rchild;
+    struct Node *pl = p->lchild;
+    struct Node *plr = pl->rchild;
 
-    tl->rchild = tlr->lchild;
-    p->lchild = tlr->rchild;
+    pl->rchild = plr->lchild;
+    p->lchild = plr->rchild;
 
-    tlr->lchild = tl;
-    tlr->rchild = p;
+    plr->lchild = pl;
+    plr->rchild = p;
 
-    tl->height = Nodeheight(tl);
+    pl->height = Nodeheight(pl);
     p->height = Nodeheight(p);
-    tlr->height = Nodeheight(tlr);
+    plr->height = Nodeheight(plr);
 
     if (root == p)
-    {
-        root = tlr;
-    }
+        root = plr;
 
-    return tlr;
+    return plr;
 }
 
 struct Node *RLrotation(struct Node *p)
 {
 
-    struct Node *tr = p->rchild;
-    struct Node *trl = tr->lchild;
+    struct Node *pr = p->rchild;
+    struct Node *prl = pr->lchild;
 
-    tr->lchild = trl->rchild;
-    p->rchild = trl->lchild;
+    pr->lchild = prl->rchild;
+    p->rchild = prl->lchild;
 
-    trl->lchild = p;
-    trl->rchild = tr;
+    prl->lchild = p;
+    prl->rchild = pr;
 
-    tr->height = Nodeheight(tr);
+    pr->height = Nodeheight(pr);
     p->height = Nodeheight(p);
-    trl->height = Nodeheight(trl);
+    prl->height = Nodeheight(prl);
 
     if (root == p)
-    {
-        root = trl;
-    }
+        root = prl;
 
-    return trl;
+    return prl;
 }
 
 struct Node *RInsert(struct Node *p, int key)
 {
-    struct Node *newnode = NULL;
+    struct Node *t = NULL;
 
     if (p == NULL)
     {
-        newnode = (struct Node *)malloc(sizeof(struct Node));
-        newnode->data = key;
-        newnode->height = 1;
-        newnode->lchild = NULL;
-        newnode->rchild = NULL;
+        t = (struct Node *)malloc(sizeof(struct Node));
+        t->data = key;
+        t->height = 1;
+        t->lchild = NULL;
+        t->rchild = NULL;
 
-        return newnode;
+        return t;
     }
 
     if (p->data < key)
-    {
         p->rchild = RInsert(p->rchild, key);
-    }
     else if (p->data > key)
-    {
         p->lchild = RInsert(p->lchild, key);
-    }
 
     p->height = Nodeheight(p);
 
     if (bfactor(p) == 2 && bfactor(p->lchild) == 1)
-    {
         return LLrotation(p);
-    }
     else if (bfactor(p) == -2 && bfactor(p->rchild) == -1)
-    {
         return RRrotation(p);
-    }
     else if (bfactor(p) == -2 && bfactor(p->rchild) == 1)
-    {
         return RLrotation(p);
-    }
     else if (bfactor(p) == 2 && bfactor(p->lchild) == -1)
-    {
         return LRrotation(p);
-    }
 
     return p;
 }
@@ -165,9 +145,7 @@ struct Node *RInsert(struct Node *p, int key)
 struct Node *predecessor(struct Node *p)
 {
     while (p && p->rchild != NULL)
-    {
         p = p->rchild;
-    }
 
     return p;
 }
@@ -175,9 +153,7 @@ struct Node *predecessor(struct Node *p)
 struct Node *successor(struct Node *p)
 {
     while (p && p->lchild != NULL)
-    {
         p = p->lchild;
-    }
 
     return p;
 }
@@ -187,27 +163,19 @@ struct Node *Delete(struct Node *p, int key)
     struct Node *q;
 
     if (p == NULL)
-    {
         return 0;
-    }
     if (p->lchild == NULL && p->rchild == NULL)
     {
         if (p == root)
-        {
             root = NULL;
-        }
         free(p);
         return 0;
     }
 
     if (key < p->data)
-    {
         p->lchild = Delete(p->lchild, key);
-    }
     else if (key > p->data)
-    {
         p->rchild = Delete(p->rchild, key);
-    }
     else
     {
         if (Nodeheight(p->lchild) > Nodeheight(p->lchild))
@@ -227,29 +195,17 @@ struct Node *Delete(struct Node *p, int key)
     p->height = Nodeheight(p);
 
     if (bfactor(p) == 2 && bfactor(p->lchild) == 1)
-    {
         return LLrotation(p);
-    }
     else if (bfactor(p) == -2 && bfactor(p->rchild) == -1)
-    {
         return RRrotation(p);
-    }
     else if (bfactor(p) == -2 && bfactor(p->rchild) == 1)
-    {
         return RLrotation(p);
-    }
     else if (bfactor(p) == 2 && bfactor(p->rchild) == -1)
-    {
         return LRrotation(p);
-    }
-    else if (bfactor(p) == 2 && bfactor(p->lchild) == 0)
-    {
+    else if (bfactor(p) == 2 && bfactor(p->lchild) == 0) // either LL or LR rotation can be done;
         return LLrotation(p);
-    }
     else if (bfactor(p) == -2 && bfactor(p->rchild) == 0)
-    {
         return RRrotation(p);
-    }
 
     return p;
 }
