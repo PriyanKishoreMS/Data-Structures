@@ -91,7 +91,7 @@ struct Node *delete (struct Node *p, int key)
         p->lchild = delete (p->lchild, key);
     else if (key > p->data)
         p->rchild = delete (p->rchild, key);
-    else
+    else if (key == p->data)
     {
         if (height(p->lchild) > height(p->rchild))
         {
